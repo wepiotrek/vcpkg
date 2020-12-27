@@ -139,6 +139,8 @@ namespace vcpkg::Build
     {
         ALLOW = 0,
         PROHIBIT
+    };
+    
     enum class ProgressBar
     {
         NO = 0,
