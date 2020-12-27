@@ -139,6 +139,10 @@ namespace vcpkg::Build
     {
         ALLOW = 0,
         PROHIBIT
+    enum class ProgressBar
+    {
+        NO = 0,
+        YES
     };
 
     struct BuildPackageOptions
@@ -153,6 +157,7 @@ namespace vcpkg::Build
         PurgeDecompressFailure purge_decompress_failure;
         Editable editable;
         BackcompatFeatures backcompat_features;
+        ProgressBar disable_progress_bar;
     };
 
     static constexpr BuildPackageOptions default_build_package_options{
@@ -179,6 +184,7 @@ namespace vcpkg::Build
         Build::PurgeDecompressFailure::YES,
         Build::Editable::NO,
         Build::BackcompatFeatures::PROHIBIT,
+        Build::ProgressBar::YES,
     };
 
     static constexpr std::array<BuildResult, 6> BUILD_RESULT_VALUES = {

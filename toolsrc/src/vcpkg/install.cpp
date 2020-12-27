@@ -519,6 +519,7 @@ namespace vcpkg::Install
     static constexpr StringLiteral OPTION_USE_ARIA2 = "x-use-aria2";
     static constexpr StringLiteral OPTION_CLEAN_AFTER_BUILD = "clean-after-build";
     static constexpr StringLiteral OPTION_WRITE_PACKAGES_CONFIG = "x-write-nuget-packages-config";
+    static constexpr StringLiteral OPTION_DISABLE_PROGRESS_BAR = "disable-progress-bar";
     static constexpr StringLiteral OPTION_MANIFEST_NO_DEFAULT_FEATURES = "x-no-default-features";
     static constexpr StringLiteral OPTION_MANIFEST_FEATURE = "x-feature";
     static constexpr StringLiteral OPTION_PROHIBIT_BACKCOMPAT_FEATURES = "x-prohibit-backcompat-features";
@@ -536,6 +537,7 @@ namespace vcpkg::Install
         {OPTION_CLEAN_AFTER_BUILD, "Clean buildtrees, packages and downloads after building each package"},
         {OPTION_PROHIBIT_BACKCOMPAT_FEATURES,
          "(experimental) Fail install if a package attempts to use a deprecated feature"},
+        {OPTION_DISABLE_PROGRESS_BAR, "Disable progress bar"},
     }};
 
     static constexpr std::array<CommandSwitch, 10> MANIFEST_INSTALL_SWITCHES = {{
@@ -769,6 +771,7 @@ namespace vcpkg::Install
         const bool is_editable = Util::Sets::contains(options.switches, (OPTION_EDITABLE)) || !args.cmake_args.empty();
         const bool use_aria2 = Util::Sets::contains(options.switches, (OPTION_USE_ARIA2));
         const bool clean_after_build = Util::Sets::contains(options.switches, (OPTION_CLEAN_AFTER_BUILD));
+        const bool disable_progress_bar = Util::Sets::contains(options.switches, (OPTION_DISABLE_PROGRESS_BAR));
         const KeepGoing keep_going =
             to_keep_going(Util::Sets::contains(options.switches, OPTION_KEEP_GOING) || only_downloads);
         const bool prohibit_backcompat_features =
@@ -790,6 +793,7 @@ namespace vcpkg::Install
             Build::PurgeDecompressFailure::NO,
             Util::Enum::to_enum<Build::Editable>(is_editable),
             prohibit_backcompat_features ? Build::BackcompatFeatures::PROHIBIT : Build::BackcompatFeatures::ALLOW,
+            Util::Enum::to_enum<Build::ProgressBar>(disable_progress_bar),
         };
 
         PortFileProvider::PathsPortFileProvider provider(paths, args.overlay_ports);
